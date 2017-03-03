@@ -1,0 +1,68 @@
+// sezam.cpp : Defines the entry point for the console application.
+//
+
+#include "stdafx.h"
+#include <fstream>
+#include <cstdlib>
+#include <string>
+#include <iostream>
+
+using namespace std;
+int main()
+{
+	string linia;
+	int ile;
+	fstream plik,zapis;
+	char litera;
+	char szyfr='A';
+	string tak = "Tak";
+	string  nie = "Nie";
+	string wybor;
+	cout << "Szyfrujesz wpisz tak" << endl;
+	cin >> wybor;
+	if (wybor == "tak")
+	{
+		cout << "Podaj jakie ma byc przesuniecie " << endl;
+		cin >> ile;
+
+		plik.open("plik.txt", ios::in);
+
+		zapis.open("szyfr.txt", ios::out | ios::trunc);
+		if (plik.good() == true)
+		{
+			while (!plik.eof()) {
+				plik>>noskipws >> litera;
+				if (isalpha(litera)) {
+					toupper(litera);
+					if (litera >= 90) {
+						litera -= 25;
+		
+					}
+					szyfr = litera + ile;
+					if (szyfr >= 90) {
+						szyfr -= 25;
+					}
+					if (zapis.good() == true)
+					{
+						zapis << szyfr;
+					}
+					cout << szyfr << endl;
+				}
+				cout << litera << endl;
+			
+			}
+			plik.close();
+			zapis.close();
+		}
+
+		
+		
+
+	}
+
+
+	
+	system("PAUSE");
+    return 0;
+}
+
