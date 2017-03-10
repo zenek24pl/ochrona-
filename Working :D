@@ -1,0 +1,95 @@
+// ConsoleApplication1.cpp : Defines the entry point for the console application.
+//
+
+#include "stdafx.h"
+#include <fstream>
+#include <cstdlib>
+#include <string>
+#include <iostream>
+
+using namespace std;
+int main()
+{
+	string linia;
+	int ile;
+	fstream plik, zapis,zapis2;
+	char litera;
+	char szyfr;
+	string tak = "Tak";
+	string  nie = "Nie";
+	string wybor;
+	cout << "Szyfrujesz wpisz tak" << endl;
+	cin >> wybor;
+	if (wybor == "tak")
+	{
+		cout << "Podaj jakie ma byc przesuniecie " << endl;
+		cin >> ile;
+
+		plik.open("plik.txt", ios::in);
+
+		zapis.open("szyfr.txt", ios::out | ios::trunc);
+		if (plik.good() == true)
+		{
+			while (!plik.eof()) {
+				plik >> noskipws >> litera;
+				if (plik.fail())
+					break;
+				if (isalpha(litera)) {
+					litera=toupper(litera);
+					
+					szyfr = litera + ile;
+					if (szyfr > 90) {
+						szyfr -= 26;
+					}
+					if (zapis.good() == true)
+					{
+						zapis << szyfr;
+					}
+					cout << szyfr << endl;
+				}
+				cout << litera << endl;
+
+			}
+			plik.close();
+			zapis.close();
+		}
+	
+		//deszyfr
+		zapis.open("szyfr.txt", ios::in);
+		zapis2.open("zapis.txt", ios::out | ios::trunc);
+		if (zapis.good() == true)
+		{
+			while (!zapis.eof()) {
+				zapis >> noskipws >> litera;
+				if (zapis.fail())
+					break;
+				if (isalpha(litera)) {
+					litera=toupper(litera);
+					szyfr = litera + ((-1)*ile);
+					if (szyfr < 65) {
+						szyfr += 26;
+					}
+					if (zapis2.good() == true)
+					{
+						zapis2 << szyfr;
+					}
+
+					cout << szyfr << endl;
+				}
+				cout << litera << endl;
+
+			}
+			zapis.close();
+			zapis2.close();
+		}
+
+
+
+
+	}
+
+
+
+	system("PAUSE");
+	return 0;
+}
