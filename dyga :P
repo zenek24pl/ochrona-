@@ -1,0 +1,139 @@
+// Sezam.cpp : Defines the entry point for the console application.
+//
+
+#include "stdafx.h"
+#include <fstream>
+#include <cstdlib>
+#include <string>
+#include <iostream>
+
+using namespace std;
+int main()
+{
+	string linia;
+	int ile;
+	fstream plik, zapis, zapis2;
+	char litera;
+	char szyfr;
+	char tab[26] = { 'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z' };
+	char tabdesz[26] = { 'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z' };
+	int ilosc[26] = { 0 };
+	int ilosc2[26] = { 0 };
+
+	int i = 0;
+	string tak = "Tak";
+	string  nie = "Nie";
+	string wybor;
+	cout << "Szyfrujesz wpisz tak" << endl;
+	cin >> wybor;
+	if (wybor == "tak")
+	{
+		cout << "Podaj jakie ma byc przesuniecie " << endl;
+		cin >> ile;
+
+		plik.open("plik.txt", ios::in);
+
+		zapis.open("szyfr.txt", ios::out | ios::trunc);
+		if (plik.good() == true)
+		{
+			while (!plik.eof()) {
+				plik >> noskipws >> litera;
+				
+				if (plik.fail())
+					break;
+				if (isalpha(litera)) {
+					litera = toupper(litera);
+					for (i = 0;i < 26;i++) {
+							if(tab[i]==litera)
+							ilosc[i] ++;
+					}
+					
+					szyfr = litera + ile;
+					if (szyfr > 90) {
+						szyfr -= 26;
+					}
+					for (i = 0;i < 26;i++) {
+						if (tabdesz[i] == szyfr)
+							ilosc2[i] ++;
+					}
+					if (zapis.good() == true)
+					{
+						zapis << szyfr;
+					}
+//					cout << szyfr << endl;
+				}
+	//			cout << litera << endl;
+
+			}
+			
+			plik.close();
+			zapis.close();
+		}
+		cout << endl;
+		cout << "LITERY" << endl;
+		for (i = 0;i < 26;i++) {
+			cout <<  tab[i] << "=" << (double)(ilosc[i])/26 << endl;
+		}
+		int tempIndex=0,tempIndex2=0;
+		for (i = 0;i < 26;i++) {
+			int max = 0;
+			if (max <= ilosc[i]) {
+				max = ilosc[i];
+				tempIndex = i;
+			}
+
+		}
+		
+		cout << endl;
+		cout << "POSZYFSZE " << endl;
+		for (i = 0;i < 26;i++) {
+			cout  << tabdesz[i] << "=" << (double)(ilosc2[i])/26 << endl;
+		}
+		for (i = 0;i < 26;i++) {
+			int max = 0;
+			if (max <= ilosc2[i]) {
+			max = ilosc2[i];
+			tempIndex2 = i;
+		}
+
+		}
+		cout << "Tyle samo tu : " << ilosc[tempIndex] << " i tu : " << ilosc2[tempIndex2] << endl;
+		//deszyfr
+		zapis.open("szyfr.txt", ios::in);
+		zapis2.open("zapis.txt", ios::out | ios::trunc);
+		if (zapis.good() == true)
+		{
+			while (!zapis.eof()) {
+				zapis >> noskipws >> litera;
+				if (zapis.fail())
+					break;
+				if (isalpha(litera)) {
+					litera = toupper(litera);
+					szyfr = litera + ((-1)*ile);
+					if (szyfr < 65) {
+						szyfr += 26;
+					}
+					if (zapis2.good() == true)
+					{
+						zapis2 << szyfr;
+					}
+
+	//				cout << szyfr << endl;
+				}
+//				cout << litera << endl;
+
+			}
+			zapis.close();
+			zapis2.close();
+		}
+
+
+
+
+	}
+
+
+
+	system("PAUSE");
+	return 0;
+}
