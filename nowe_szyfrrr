@@ -1,0 +1,70 @@
+// sezam_nowy_szyfr.cpp : Defines the entry point for the console application.
+//
+
+#include "stdafx.h"
+#include <fstream>
+#include <cstdlib>
+#include <string>
+#include <iostream>
+
+using namespace std;
+
+
+int main()
+{
+	fstream plik;
+	string linia;
+
+	char tab[36] = { 'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','0','1','2','3','4','5','6','7','8','9' };
+	char szyfr[6] = { 'D','Z','I','U','R','A' };
+
+	string haslo;
+	char zakodowane;
+	int ktoryIndex = 0;
+	int drugieIndexy = 0;
+	plik.open("plik.txt", ios::in);
+	if (plik.good() == true)
+	{
+		char litera;
+		while (!plik.eof()) {
+			plik >> noskipws >> litera;
+
+			if (plik.fail())
+				break;
+			if (isalpha(litera) || isdigit(litera)) {
+				
+				litera = toupper(litera);
+				
+
+				for (int i = 0;i < 36;i++) {
+
+					if (litera == tab[i]) {
+						ktoryIndex = i;
+						cout << endl;
+						cout << ktoryIndex;
+						for(int k=0;k<36;k++){
+						for (int j = 0;j < 6;j++) {
+							if(szyfr[j]==tab[k]){
+							drugieIndexy = ktoryIndex + k;
+							if (drugieIndexy < 36) {
+								zakodowane = tab[drugieIndexy];
+							}
+							else
+							{
+								zakodowane = tab[drugieIndexy - 36];
+							}
+							}
+						}
+						}
+						cout << endl;
+						cout << zakodowane << endl;
+					}
+				}
+
+			}
+		}
+		plik.close();
+	}
+	system("PAUSE");
+    return 0;
+}
